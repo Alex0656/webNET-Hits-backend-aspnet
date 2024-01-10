@@ -14,8 +14,6 @@ namespace lab1_backend.Controllers
 
         private readonly MovieDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        // private readonly SignInManager<IdentityUser> _signInManager;
-        // private readonly JWTSettings _options;
 
         public FavoriteMovieController(MovieDbContext context, UserManager<IdentityUser> genre) // конструктор для приведения _context к актуальному состоянию
         {
@@ -27,10 +25,8 @@ namespace lab1_backend.Controllers
        [HttpPost("favorites/id/add")]
         public async Task AddNewFavoriteMovie(FavoriteMovies movieIn)
         {
-            //  var userId = _userManager.FindByIdAsync(User.Identity.Id);
             var userName = User.Identity.Name;
             movieIn.UserName = userName;
-           // var finalCut = 
             await _context.FavoriteMovies.AddAsync(movieIn);
             await _context.SaveChangesAsync();
 
@@ -40,8 +36,6 @@ namespace lab1_backend.Controllers
         public async Task<IActionResult> GetFavoriteMovie()
         {
             var userName = User.Identity.Name;
-          //  movieIn.UserName = userName;
-          // while()
             var favoritesMovieId = _context.FavoriteMovies.FirstOrDefault(x => x.UserName == userName);
             
             var allFavoritesOfUser = _context.FavoriteMovies.Where(p => p.UserName == userName);
@@ -65,31 +59,14 @@ namespace lab1_backend.Controllers
                 }
             }
 
-
-            /* for (var i = 1; i <= countF; i++)
-             {
-                 if ()
-                   FavoriteMovieId.ElementAt(i);
-                 list_movie.Add(movi_temp.ElementAt(i));
-             }
-             return Ok(list_movie);
-
-
-               while (countF > 0)
-                 {
-
-                   countF--;
-                 } */
             return Ok(list_movie);
             
         }
-        // осталось разобраться только с тем, чтобы при удалении еще и учитывать имя пользователя ( в совсем крайнем случае решить можно циклом
         [HttpDelete]
         public async Task<IActionResult> DeleteFavoriteMovie(string id)
         {
 
             var userName = User.Identity.Name;
-           // var favoriteMovie = _context.FavoriteMovies.Where(p => p.UserName== userName).FirstOrDefault();
             var favoriteMovie = _context.FavoriteMovies.Where((p => p.MovieId == id)).FirstOrDefault();
             _context.FavoriteMovies.Remove(favoriteMovie);
             await _context.SaveChangesAsync();
