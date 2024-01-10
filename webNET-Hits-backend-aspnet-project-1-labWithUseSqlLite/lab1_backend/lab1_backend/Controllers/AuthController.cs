@@ -23,16 +23,6 @@ namespace lab1_backend.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly JWTSettings _options;
 
-
-        /*public AuthController(MovieCatalogContext context, UserManager<IdentityUser> user, SignInManager<IdentityUser> signIn, IOptions<JWTSettings> optAccess) // конструктор для приведения _context к актуальному состоянию
-        {
-            _context = context;
-            _userManager = user;
-            _signInManager = signIn;
-            _options = optAccess.Value;
-
-        }
-        */
         public AuthController(UserManager<IdentityUser> user, SignInManager<IdentityUser> signIn, IOptions<JWTSettings> optAccess) // конструктор для приведения _context к актуальному состоянию
         {
             _userManager = user;
@@ -41,20 +31,7 @@ namespace lab1_backend.Controllers
 
         }
 
-
-        /* [HttpPost("register")]
-         public  async Task Register(User model)
-         {
-
-             await _context.Users.AddAsync(model);
-             await _context.SaveChangesAsync();
-         }
-        */
-
-        //Надо проследить за правильностью всех полей
-        
         [HttpPost("register")]
-        //[AllowAnonymous]
         public async Task<IActionResult> Register(OtherParamUser paramUser)
         {
             var user = new IdentityUser { UserName = paramUser.UserName, Email = paramUser.Email };
@@ -73,7 +50,6 @@ namespace lab1_backend.Controllers
                 claims.Add(new Claim(ClaimTypes.Email, paramUser.Email));
 
                 await _userManager.AddClaimsAsync(user, claims);
-      //Авторизирую ли я тут пользователя, или просто выдаю токен?
                 var token = GetToken(user, claims);
                 return Ok(token);
             }
@@ -86,7 +62,6 @@ namespace lab1_backend.Controllers
             
         }
 
-        // private string GetToken(IdentityUser user, IEnumerable<Claim> prinicpal)
         private string GetToken(IdentityUser user, IEnumerable<Claim> prinicpal)
         {
             var claims = prinicpal.ToList();
@@ -106,7 +81,6 @@ namespace lab1_backend.Controllers
 
         
         [HttpPost("login")]
-        //[AllowAnonymous]
         public async Task<IActionResult> SignIn(ParamUser paramUser)
         {
             var user = await _userManager.FindByNameAsync(paramUser.UserName);
