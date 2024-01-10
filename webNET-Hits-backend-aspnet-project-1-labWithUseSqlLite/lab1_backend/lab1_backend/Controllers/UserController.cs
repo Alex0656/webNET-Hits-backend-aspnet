@@ -57,7 +57,6 @@ namespace lab1_backend.Controllers
             var pairId = new MyPair("id", usrId.ToString());
             myPairList.Add(pairId);
 
-            //   return this.Content(HttpStatusCode.OK,);
             return Ok(MyPair.ToJson("Профиль пользователя " + usrName, myPairList));
         }
 
@@ -82,8 +81,6 @@ namespace lab1_backend.Controllers
 
         [HttpPut]
         [Authorize]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> UpdateProfile(OtherParamUser paramUser)
         public async Task<IActionResult> UpdateProfile(UserShortModel userFromParam)
         {
 
@@ -131,8 +128,6 @@ namespace lab1_backend.Controllers
 
         [HttpPut("experements")]
         [Authorize]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> UpdateProfile(OtherParamUser paramUser)
         public async Task<IActionResult> ExperementalUpdateProfile(MyUserProfile myUserProfile)
         {
 
@@ -149,7 +144,6 @@ namespace lab1_backend.Controllers
             claims.Add(new Claim("BirthDate", myUserProfile.BirthDate.ToString()));
             claims.Add(new Claim("NickName", myUserProfile.NickName.ToString()));
             claims.Add(new Claim("Avatar", myUserProfile.Avatar.ToString()));
-          //  claims.Add(new Claim(ClaimTypes.Email, myUserProfile.Email)); //
 
             userFromDb_byNameFromSecuritySession.Email = myUserProfile.Email;
 

@@ -14,8 +14,7 @@ namespace lab1_backend.Controllers
     {
 
         private readonly JWTSettings _options;
-        public TokenController(IOptions<JWTSettings> optAccess) // конструктор контроллера получает парааметры токена, хранящиеся в файле appsettings.json
-        {
+        public TokenController(IOptions<JWTSettings> optAccess) 
             _options = optAccess.Value;
         }
 
