@@ -24,24 +24,12 @@ namespace lab1_backend.Controllers
     {
         private readonly MovieDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-     // private readonly SignInManager<IdentityUser> _signInManager;
-     // private readonly JWTSettings _options;
-
-        public MovieController(MovieDbContext context, UserManager<IdentityUser> genre) // конструктор для приведения _context к актуальному состоянию
+        public MovieController(MovieDbContext context, UserManager<IdentityUser> genre) 
         {
             _userManager = genre;
             _context = context;
 
         }
-
-     /*   public AuthController(UserManager<IdentityUser> user, SignInManager<IdentityUser> signIn, IOptions<JWTSettings> optAccess) // конструктор для приведения _context к актуальному состоянию
-        {
-            _userManager = user;
-            _signInManager = signIn;
-            _options = optAccess.Value;
-
-        }
-     */
 
         [HttpPost("add/movie")]
         public async Task AddNewMovie(AddMovieModel movieIn)
@@ -77,7 +65,6 @@ namespace lab1_backend.Controllers
         {
             List<Genres> genres = _context.Genres.ToList();
             List<GenresToMovies> genresToMovies = genres.Select(p => new GenresToMovies { Id = p.id, Name = p.name }).ToList();
-            //return Ok(JsonSerializer.Serialize(genresToMovies));
             return Ok(GenresToMovies.ToJson(genresToMovies));
         }
 
@@ -103,7 +90,7 @@ namespace lab1_backend.Controllers
 
 
         [HttpGet("movies/{page}")]
-        public async Task<IActionResult> GetMoviePage(int page) //List<Movie> 
+        public async Task<IActionResult> GetMoviePage(int page)
         {
             AllMovies allMovies = new AllMovies();
 
@@ -113,8 +100,6 @@ namespace lab1_backend.Controllers
 
             int movieCount = _context.Movie.Count();
 
-            //  int pageCount = sum_page;
-            // list_movie.Add(pageSize);
             int pageCount =(int)Math.Ceiling((double)movieCount / pageInfo.pageSize);
 
             if (pageCount < page || page <= 0)
@@ -154,98 +139,8 @@ namespace lab1_backend.Controllers
             allMovies.pageInfo = pageInfo;
             return Ok(allMovies);
 
-           /* for (var q = 1; q <= sum2; q++)
-            {
-                if (q == page)
-                {
-                    for (var i = 1; i <= 6; i++)
-                    {
-                        _index = (page * 6) - i;
-                        list_movie.Add(movi_temp.ElementAt(_index));
-                    }
-                    return Ok(list_movie);
-                }
-            }
-
-            if (page == sum2 + 1)
-            {
-                int temp = movi_temp.Count() - sum2 * 6;
-
-                for (var i = 0; i < temp; i++)
-                {
-                    _index = (sum_page * 6) + i;
-                    list_movie.Add(movi_temp.ElementAt(_index));
-                }
-                return Ok(list_movie);
-            }
-            else
-            {
-                return Ok();
-            }
-           */
-        }
-
-
-        /*
-        [HttpGet("details/movies/page_THIS")]
-        public async Task<IActionResult> GetMoviePageExperements(int page) //List<Movie> 
-        {
-
-            var movies = _context.Movie.Include(x => x.Genres);
-
-            var sum_page = movies.Count() / 6;
-            var sum2 = sum_page;
-            var list_movie = new List<Movie>();
-            int _index = 0;
-            var movi_temp = _context.Movie.Include(x => x.Genres).ToList();
-
-            int pageSize = 6;
-            int pageCount = sum_page;
-            // list_movie.Add(pageSize);
-
-
-
-
-            for (var q = 1; q <= sum2; q++)
-            {
-                if (q == page)
-                {
-                    for (var i = 1; i <= 6; i++)
-                    {
-                        _index = (page * 6) - i;
-                        list_movie.Add(movi_temp.ElementAt(_index));
-                    }
-                    return Ok(list_movie);
-                }
-            }
-
-            if (page == sum2 + 1)
-            {
-                int temp = movi_temp.Count() - sum2 * 6;
-
-                for (var i = 0; i < temp; i++)
-                {
-                    _index = (sum_page * 6) + i;
-                    list_movie.Add(movi_temp.ElementAt(_index));
-                }
-                return Ok(list_movie);
-            }
-            else
-            {
-                return Ok();
-            }
-        }
-        */
-       
-
-
-
-
-
-
-
         [HttpGet]
-        [Route("details/{id}")]// жанры не сереализуються
+        [Route("details/{id}")]
         public MovieGetByIdMeth GetMovieByIdMeth([FromRoute]string id)
         {
             
