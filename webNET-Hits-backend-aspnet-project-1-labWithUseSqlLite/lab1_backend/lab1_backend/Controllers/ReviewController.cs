@@ -12,10 +12,8 @@ namespace lab1_backend.Controllers
 
         private readonly MovieDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        // private readonly SignInManager<IdentityUser> _signInManager;
-        // private readonly JWTSettings _options;
 
-        public ReviewController(MovieDbContext context, UserManager<IdentityUser> genre) // конструктор для приведения _context к актуальному состоянию
+        public ReviewController(MovieDbContext context, UserManager<IdentityUser> genre)
         {
             _userManager = genre;
             _context = context;
@@ -38,7 +36,6 @@ namespace lab1_backend.Controllers
             return Ok();
         }
 
-        // Вроде готово, на свежую голову еще посмотри -- не  всегда удаляет, ошибка foreginkey
         [HttpPut("edit")]
         public async Task<IActionResult> EditReview(string movieId, string reviewId, ReviewModel review)
         {
@@ -59,11 +56,6 @@ namespace lab1_backend.Controllers
             return Ok();
         }
 
-
-
-
-
-        // Вроде готово, на свежую голову еще посмотри -- не  всегда удаляет, ошибка foreginkey
         [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteReview(string movieId, string reviewId)
         {
